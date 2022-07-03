@@ -12,7 +12,6 @@
           v-bind:pokemon="pokemon"
           v-bind:loading="loading"
           v-bind:error="error"
-          v-on:submit="handleSubmit($event)"
         />
       </div>
       <div class="pokedex-left-bottom">
@@ -21,7 +20,7 @@
           <div class="light is-green is-large" />
           <div class="light is-orange is-large" />
         </div>
-        <pokedex-form />
+        <pokedex-form v-on:searchPokemon="handleSubmit($event)" />
       </div>
     </div>
     <!-- <div class="pokedex-right-front" /> -->
@@ -409,8 +408,8 @@ ul {
 </style>
 
 <script>
-import PokedexScreen from "./PokedexScreen.vue";
 import PokedexForm from "./PokedexForm.vue";
+import PokedexScreen from "./PokedexScreen.vue";
 
 export default {
   name: "PokedexApp",
@@ -445,6 +444,7 @@ export default {
         });
     },
     handleSubmit(pokemonId) {
+      console.log(["pokemonId", pokemonId]);
       if (pokemonId !== "") {
         this.error = false;
         this.loading = true;
