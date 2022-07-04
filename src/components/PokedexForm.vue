@@ -19,9 +19,14 @@ export default {
   data() {
     return {
       pokemonName: "",
+      pokemonListStorage: [],
     };
   },
-
+  mounted() {
+    if (localStorage.pokemonListName) {
+      this.pokemonListStorage = JSON.parse(localStorage.pokemonListName);
+    }
+  },
   methods: {
     search() {
       const pokemonName = this.pokemonName;

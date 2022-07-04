@@ -423,10 +423,12 @@ export default {
       loading: true,
       pokemon: null,
       pokemonId: Math.floor(Math.random() * 806 + 1).toString(),
+      pokemonListName: [],
     };
   },
   created() {
     this.getPokemon();
+    this.getPokemonList();
   },
 
   methods: {
@@ -441,6 +443,24 @@ export default {
           console.log(err);
           this.loading = false;
           this.error = true;
+        });
+    },
+    getPokemonList() {
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=10`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          this.pokemonListName = data.results.map((pokemon) => {
+            return pokemon.name;
+          });
+          localStorage.setItem(
+            "pokemonListName",
+            JSON.stringify(this.pokemonListName)
+          );
+          console.log(this.pokemonListName);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     handleSubmit(pokemonId) {
