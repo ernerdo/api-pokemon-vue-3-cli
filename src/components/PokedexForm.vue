@@ -1,21 +1,21 @@
 <template>
   <form class="pokemon-form" v-on:submit.prevent="search()">
-    <input
-      class="pokemon-input"
-      type="text"
-      name="pokemon"
+    <VueMultiselect
       v-model="pokemonName"
-      placeholder="Busca tu pokemon"
-      autocomplete="off"
-    />
-    <button type="submit" class="pokemon-btn" />
+      :closeOnSelect="true"
+      :options="pokemonListStorage"
+      placeholder="Search pokemon"
+      @select="onSelect"
+    >
+    </VueMultiselect>
   </form>
 </template>
 
 <script>
+import VueMultiselect from "vue-multiselect";
 export default {
   name: "PokedexForm",
-
+  components: { VueMultiselect },
   data() {
     return {
       pokemonName: "",
@@ -27,15 +27,26 @@ export default {
       this.pokemonListStorage = JSON.parse(localStorage.pokemonListName);
     }
   },
+  computed: {
+    searchPokemon() {
+      return this.pokemonListStorage.filter((pokemon) => {
+        return pokemon.toLowerCase().includes(this.pokemonName.toLowerCase());
+      });
+    },
+  },
   methods: {
     search() {
-      const pokemonName = this.pokemonName;
-      const newPokemonId = window.isNaN(parseInt(pokemonName))
-        ? pokemonName.toLowerCase()
-        : pokemonName;
-      console.log(newPokemonId);
-      this.$emit("searchPokemon", this.pokemonName);
+      if (this.pokemonName) {
+        this.$emit("searchPokemon", this.pokemonName);
+      }
+    },
+    onSelect(option) {
+      if (option) {
+        this.pokemonName = option;
+        this.search();
+      }
     },
   },
 };
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -70,7 +70,7 @@ ul {
   perspective: 1000px;
   position: relative;
   overflow: hidden;
-  height: 31rem;
+  height: 29rem;
   width: 23rem;
   margin: 0 auto;
   overflow: initial;
@@ -237,11 +237,11 @@ ul {
 
 .pokedex-left {
   background: var(--red);
-  height: inherit;
+  /* height: inherit; */
   width: inherit;
   border-radius: 10px 0 0 10px;
   border: 1px solid black;
-  border-right: 10px solid black;
+  /* border-right: 10px solid black; */
   box-sizing: border-box;
   padding: 15px 20px;
 }
@@ -320,6 +320,9 @@ ul {
 .pokedex-no-screen {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  /* border: 2px solid black; */
+  border-radius: 10px;
 }
 .stat-name {
   text-transform: capitalize;
@@ -329,9 +332,9 @@ ul {
 /* Pokedex Form */
 /*---------------------*/
 .pokemon-form {
-  display: grid;
-  grid-template-columns: 1fr 50px;
-  column-gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-top: 1em;
 }
 
@@ -446,10 +449,9 @@ export default {
         });
     },
     getPokemonList() {
-      fetch(`https://pokeapi.co/api/v2/pokemon?limit=10`)
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           this.pokemonListName = data.results.map((pokemon) => {
             return pokemon.name;
           });
@@ -457,19 +459,19 @@ export default {
             "pokemonListName",
             JSON.stringify(this.pokemonListName)
           );
-          console.log(this.pokemonListName);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     handleSubmit(pokemonId) {
-      console.log(["pokemonId", pokemonId]);
       if (pokemonId !== "") {
         this.error = false;
         this.loading = true;
         this.pokemonId = pokemonId;
-        this.getPokemon();
+        setTimeout(() => {
+          this.getPokemon();
+        }, 2000);
         return;
       }
       this.error = true;
